@@ -132,7 +132,7 @@ export default function AgreementsScreen() {
       <View style={styles.header}>
         <Text style={[styles.title, { color: theme.text }]}>Agreements</Text>
       </View>
-      
+      <View>
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false} 
@@ -162,6 +162,7 @@ export default function AgreementsScreen() {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      </View>
       
       {filteredAgreements.length > 0 ? (
         <Animated.View entering={FadeIn} style={{ flex: 1 }}>

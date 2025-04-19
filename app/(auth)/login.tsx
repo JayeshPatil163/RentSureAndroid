@@ -23,10 +23,10 @@ export default function LoginScreen() {
       
       <View style={styles.header}>
         <Animated.View entering={FadeInDown.delay(200).springify()}>
-          <Text style={[styles.appName, { color: theme.primary }]}>TenantConnect</Text>
+          <Text style={[styles.appName, { color: theme.primary }]}>RentSure</Text>
         </Animated.View>
         <Animated.View entering={FadeInDown.delay(400).springify()}>
-          <Text style={[styles.tagline, { color: theme.text }]}>Find your perfect home</Text>
+          <Text style={[styles.tagline, { color: theme.text }]}>Find your perfect property</Text>
         </Animated.View>
       </View>
 

@@ -1,3 +1,6 @@
+
+
+
 export const mockProperties = [
   {
     id: 1,

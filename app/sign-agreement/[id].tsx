@@ -5,14 +5,16 @@ import {
   Text, 
   TouchableOpacity, 
   Alert,
-  ScrollView 
+  ScrollView,
+  Linking,
+  Platform 
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { ArrowLeft, Trash2, Check } from 'lucide-react-native';
+import { ArrowLeft, Trash2, Check, DollarSign } from 'lucide-react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import SignatureCanvas from 'react-native-signature-canvas';
 import { mockAgreements } from '@/utils/mockData';
@@ -74,6 +76,90 @@ export default function SignAgreementScreen() {
         },
       ]
     );
+  };
+
+  // This is a more direct approach using URI schemes that should work on most Android devices
+  const handlePayment = () => {
+    // Payment configuration
+    // TODO: Replace these values with your actual UPI details
+    const upiDetails = {
+      vpa: 'aadityanikam2004-1@oksbi', // Your UPI ID
+      payeeName: 'Rental Service', // Your name or business name
+      amount: '1000', // The payment amount
+      transactionNote: `Deposit for ${agreement?.propertyTitle || 'Property'}`,
+      currency: 'INR',
+      transactionRef: `RENT${Date.now()}` // A unique reference ID
+    };
+
+    Alert.alert(
+      'Pay Deposit',
+      `You are about to make a deposit payment of ₹${upiDetails.amount} for this property. Continue?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Continue to Payment',
+          onPress: () => {
+            if (Platform.OS === 'android') {
+              // On Android, we use a direct UPI intent URL
+              const upiUrl = constructUpiUrl(upiDetails);
+              
+              // Check if the URL can be opened
+              Linking.canOpenURL(upiUrl)
+                .then((supported) => {
+                  if (supported) {
+                    // Open the UPI URL which will trigger the payment apps
+                    Linking.openURL(upiUrl);
+                  } else {
+                    Alert.alert(
+                      'UPI Apps Not Found',
+                      'Please install a UPI payment app like Google Pay, PhonePe, or Paytm.'
+                    );
+                  }
+                })
+                .catch(error => {
+                  console.error('Error opening UPI URL:', error);
+                  Alert.alert(
+                    'Error',
+                    'Could not open payment apps. Please try again later.'
+                  );
+                });
+            } else {
+              // On iOS, there's a different approach or you might provide a web payment link
+              Alert.alert(
+                'iOS Payment',
+                'Please use the web payment option or scan the QR code using your UPI app.',
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      // Here you could open a webview with a payment gateway or show a QR code
+                      // For simplicity, we'll just show a message
+                      Alert.alert(
+                        'Payment Information',
+                        `Please pay ₹${upiDetails.amount} to UPI ID: ${upiDetails.vpa}\n\nReference: ${upiDetails.transactionRef}`
+                      );
+                    }
+                  }
+                ]
+              );
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  // Helper function to construct a UPI URL for Android
+  const constructUpiUrl = (details) => {
+    const encodedName = encodeURIComponent(details.payeeName);
+    const encodedNote = encodeURIComponent(details.transactionNote);
+    const encodedRef = encodeURIComponent(details.transactionRef);
+    
+    // This format works with most UPI apps
+    return `upi://pay?pa=${details.vpa}&pn=${encodedName}&am=${details.amount}&cu=${details.currency}&tn=${encodedNote}&tr=${encodedRef}`;
   };
 
   const signatureStyle = `
@@ -173,6 +259,20 @@ export default function SignAgreementScreen() {
             </TouchableOpacity>
           </View>
           
+          {/* Payment Button */}
+          <TouchableOpacity 
+            style={[
+              styles.paymentButton, 
+              { 
+                backgroundColor: theme.success,
+              }
+            ]} 
+            onPress={handlePayment}
+          >
+            <DollarSign size={20} color="#FFFFFF" />
+            <Text style={styles.paymentText}>Pay Deposit</Text>
+          </TouchableOpacity>
+          
           <Text style={[styles.disclaimer, { color: theme.textTertiary }]}>
             By signing, you agree to all terms and conditions in the rental agreement. 
             This is a legally binding contract.
@@ -264,6 +364,20 @@ const styles = StyleSheet.create({
   confirmText: {
     fontFamily: 'Poppins-Medium',
     fontSize: 16,
+    marginLeft: 8,
+  },
+  paymentButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 56,
+    borderRadius: 12,
+    marginBottom: 24,
+  },
+  paymentText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 16,
+    color: '#FFFFFF',
     marginLeft: 8,
   },
   disclaimer: {

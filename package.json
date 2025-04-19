@@ -19,6 +19,7 @@
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "axios": "^1.8.4",
     "expo": "~52.0.46",
     "expo-auth-session": "^6.0.3",
     "expo-blur": "~14.0.3",
@@ -42,11 +43,13 @@
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
     "react-native-signature-canvas": "^4.7.2",
+    "react-native-upi-payment": "^1.0.5",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@types/axios": "^0.9.36",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
