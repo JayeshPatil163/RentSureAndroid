@@ -11,6 +11,7 @@ import {
   Image,
   Keyboard
 } from 'react-native';
+import Ably from 'ably';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
@@ -95,6 +96,19 @@ export default function ChatScreen() {
   
   // Find the chat by ID
   const chat = mockChats.find(c => c.id === Number(id));
+  const ably = new Ably.Realtime({key:'N4AKCA.AT70ww:vl7IgQkbwaOnkrtEgT63bjrRHXReXu45FCKJFrqIEII', clientId: "server",
+    recover: (lastConnectionDetails: { recoveryKey?: string } | null) => {
+        if (lastConnectionDetails?.recoveryKey) {
+            console.log("Recovering backend connection with key:", lastConnectionDetails.recoveryKey);
+            return lastConnectionDetails.recoveryKey;
+        }
+        console.warn("No valid recovery key found, starting a new session.");
+        return null;
+    }});
+
+    const channel = ably.channels.get("get-started")
+  
+
   
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -125,7 +139,13 @@ export default function ChatScreen() {
     }
   };
 
-  const sendMessage = () => {
+  ably.connection.on('connected', () => {
+    setInterval(() => {
+        channel.publish('server-keepalive', { timestamp: Date.now() });
+    }, 20000);
+});
+
+  const sendMessage = async() => {
     if (inputMessage.trim() === '') return;
     
     const newMessage = {
@@ -134,6 +154,14 @@ export default function ChatScreen() {
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
+
+    await channel.subscribe("first", (message) => {
+      setMessages([...messages, message.data]);
+      console.log("Message received: " + message.data)
+    });
+  
+    // Publish a message with the name 'first' and the contents 'Here is my first message!'
+    await channel.publish("newMessage", { text: newMessage.text });
     
     setMessages([...messages, newMessage]);
     setInputMessage('');
