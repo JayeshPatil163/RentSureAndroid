@@ -1,50 +1,101 @@
-# Welcome to your Expo app 👋
+# RentSure - Android App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 🏡 Project Overview
 
-## Get started
+RentSure is a comprehensive rental management and verification platform designed to streamline the rental process for landlords, property managers, and tenants. This repository contains the source code for the native Android application built with React Native and Expo, which provides a seamless mobile experience for our users.
 
-1. Install dependencies
+Our platform aims to simplify key rental tasks, including:
 
-   ```bash
-   npm install
-   ```
+* **Exploring Properties**: Secure background checks, credit reports, and rental history verification.
+* **Smart Rent payments**: Automated and secure rent payments with built-in reminders.
+* **Maintenance Management**: Effortless request tracking and vendor coordination.
+* **Digital Document Signing & Management**: Secure storage and digital signing of leases and other documents.
+* **Property Analytics**: Actionable insights on property performance and tenant engagement.
 
-2. Start the app
+## 🚀 Tech Stack
 
-   ```bash
+The RentSure Android application is built using a modern TypeScript stack, leveraging the power of React Native and the Expo framework for a fast and efficient development cycle.
+
+* **Framework**: [React Native](https://reactnative.dev/)
+* **Development Platform**: [Expo](https://expo.dev)
+* **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/) (for file-based routing)
+
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+To get the project running, ensure you have the following installed on your machine:
+
+* **Node.js** (v18 or higher recommended)
+* **npm** or **Yarn**
+* **Expo CLI** (installed globally or used with `npx`)
+* **Android Studio** with an emulator configured.
+
+### Installation & Setup
+
+Follow these steps to set up and run the RentSure Android application on your local machine.
+
+1.  **Clone the Repository**
+
+    Start by cloning the Android app repository from GitHub.
+
+    ```bash
+    git clone https://github.com/JayeshPatil163/RentSureAndroid
+    ```
+
+2.  **Install Dependencies**
+
+    Navigate to the project directory and install all the necessary Node.js packages.
+
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Start the Development Server**
+
+    Run the following command to start the Metro Bundler, which will serve your application.
+
+    ```bash
     npx expo start
-   ```
+    ```
 
-In the output, you'll find options to open the app in a
+### Running on an Android Device
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Once the development server is running, you have a few options to view the app:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+* **Expo Go App**:
+    Scan the QR code displayed in your terminal using the **Expo Go** app on your physical Android device. This is the quickest way to get started.
 
-## Get a fresh project
+* **Android Emulator**:
+    Press `a` in the terminal after running `npx expo start`. This will automatically build and launch the app on your configured Android emulator.
 
-When you're ready, run:
+* **Development Build (Advanced)**:
+    For features not supported by Expo Go (e.g., custom native modules), you can create a development build.
 
-```bash
-npm run reset-project
-```
+    ```bash
+    npx expo run:android
+    ```
+    This command will build and install the app on a connected device or a running emulator.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🤝 Contribution
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Contributions are what make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-## Join the community
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-Join our community of developers creating universal apps.
+---
+## 📂 Project Structure
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The core application code is located in the `app` directory, which uses Expo Router for file-based navigation.
